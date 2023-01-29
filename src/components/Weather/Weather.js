@@ -12,26 +12,25 @@ export function Weather() {
 
   const [userLocationWeather, setUserLocationWeather] = useState({});
 
-  const fetchUserWeather = async () => {
-    try {
-      await window.navigator.geolocation.getCurrentPosition((position) => {
-        setLatitude(position.coords.latitude);
-        setLongitude(position.coords.longitude);
-      });
-
-      fetch(
-        `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${API_key}&units=metric`
-      )
-        .then((res) => res.json())
-        .then((res) => {
-          setUserLocationWeather(res);
-        });
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
   useEffect(() => {
+    const fetchUserWeather = async () => {
+      try {
+        await window.navigator.geolocation.getCurrentPosition((position) => {
+          setLatitude(position.coords.latitude);
+          setLongitude(position.coords.longitude);
+        });
+
+        fetch(
+          `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${API_key}&units=metric`
+        )
+          .then((res) => res.json())
+          .then((res) => {
+            setUserLocationWeather(res);
+          });
+      } catch (err) {
+        console.error(err);
+      }
+    };
     fetchUserWeather();
   }, [latitude, longitude]);
 
